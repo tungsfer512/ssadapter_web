@@ -2,14 +2,17 @@ import { useState } from "react";
 import {
   getServiceDescriptrions,
   enableClientService,
-  disableClientService
+  disableClientService,
+  editServiceDescriptrions,
 } from "@/services/service-descripstrions/api";
 import { message } from "antd";
 import { useForm } from "antd/es/form/Form";
 
 export default () => {
-  const [isOpen, setOpen] = useState<boolean>();
+  const [isOpenModalREST, setOpenModalREST] = useState<boolean>();
+  const [isOpenModalDetails, setOpenModalDetails] = useState<boolean>();
   const [serviceList, setServiceList] = useState<IService[]>([]);
+  const [recordService, setRecordService] = useState<any>(null);
   const [addServiceForm] = useForm<any>();
 
   const rowSelection = {
@@ -22,12 +25,19 @@ export default () => {
     }),
   };
 
-  const hideModal = () => {
-    setOpen(false);
+  const hideModalREST = () => {
+    setOpenModalREST(false);
   };
 
-  const showModal = () => {
-    setOpen(true);
+  const showModalREST = () => {
+    setOpenModalREST(true);
+  };
+  const hideModalDetails = () => {
+    setOpenModalDetails(false);
+  };
+
+  const showModalDetails = () => {
+    setOpenModalDetails(true);
   };
 
   const getServiceDescriptrionsAll = async (id: string) => {
@@ -70,14 +80,33 @@ export default () => {
     }
   };
 
+  const editServiceDescriptrionsAll = async (payload: any) => {
+    try {
+      const result = await editServiceDescriptrions(payload);
+      const resData = result;
+      console.log(resData);
+      if (resData?.status === 200) {
+        message.success("OK");
+      }
+    } catch (err) {
+      Promise.reject(err);
+    }
+  };
+
   return {
-    isOpen,
-    hideModal,
-    showModal,
+    isOpenModalREST,
+    hideModalREST,
+    showModalREST,
+    isOpenModalDetails,
+    hideModalDetails,
+    showModalDetails,
     getServiceDescriptrionsAll,
     serviceList,
+    setServiceList,
     enableClientServiceAll,
     disableClientServiceAll,
+    editServiceDescriptrionsAll,
+    recordService, setRecordService,
   };
 };
 

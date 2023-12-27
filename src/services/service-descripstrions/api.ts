@@ -10,7 +10,19 @@ export async function enableClientService(id: any) {
 }
 
 export async function disableClientService(payload: any) {
-  console.log(payload);
-
   return axios.put(`${ip3}/initialize/service-descriptions/${payload?.id}/disable`, { disabled_notice: payload?.disabled_notice });
+}
+
+export async function editServiceDescriptrions(payload: any) {
+  return axios.patch(`${ip3}/initialize/service-descriptions/${payload?.id}`, {
+    ...payload,
+    "adapter_data": {
+      "service_description": {
+        "description": payload?.descriptiondescription || "Mo ta service description"
+      },
+      "service": {
+        "description": payload?.description || "Mo ta service"
+      }
+    }
+  });
 }
