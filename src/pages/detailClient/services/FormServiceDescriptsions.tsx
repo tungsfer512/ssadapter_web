@@ -1,6 +1,22 @@
 /* eslint-disable no-underscore-dangle */
 import rules from '@/utils/rules';
-import { Form, Input, Button, Card, Spin, DatePicker, InputNumber, Col, Row, Select, Upload, Tabs, Modal } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
+import {
+	Form,
+	Input,
+	Button,
+	Card,
+	Spin,
+	DatePicker,
+	InputNumber,
+	Col,
+	Row,
+	Select,
+	Upload,
+	Tabs,
+	Modal,
+	Popconfirm,
+} from 'antd';
 import { useModel } from 'umi';
 
 const layout = {
@@ -47,6 +63,12 @@ const FormServiceDescriptsions = () => {
 		// console.log(payload);
 	};
 
+	const handleDelete = async (record: any) => {
+		await serviceDCModel.deleteServiceDescriptrionsAll(record);
+		serviceDCModel.hideModalDetails();
+		serviceDCModel.getServiceDescriptrionsAll(id);
+	};
+
 	const handleFinishFile = async (values: any) => {};
 
 	return (
@@ -57,8 +79,21 @@ const FormServiceDescriptsions = () => {
 			onCancel={serviceDCModel.hideModalDetails}
 			footer={null}
 		>
+			<Popconfirm
+				title='Are you sure that you want to delete this REST Service? '
+				okText='Yes'
+				cancelText='Cancel'
+				onConfirm={() => handleDelete(serviceDCModel.recordService)}
+			>
+				<div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', paddingRight: '36px' }}>
+					<Button type='primary' shape='round'>
+						Delete
+					</Button>
+				</div>
+			</Popconfirm>
+			<br />
 			<Form
-				id='formDonVi'
+				id='formDetails'
 				{...layout}
 				form={formDetails}
 				onFinish={handleFinish}

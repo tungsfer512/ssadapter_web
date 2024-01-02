@@ -2,12 +2,14 @@ import { PlusCircleOutlined, SettingOutlined } from '@ant-design/icons';
 import { Card, Collapse, Select, Table, Button, Modal, Form } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { unitName } from '@/services/base/constant';
-import { useModel } from 'umi';
+import { useModel, history } from 'umi';
 import { IService } from '@/models/Clients/serviceDescriptrionsClient';
 import { Switch } from 'antd';
 import rules from '@/utils/rules';
 import { Input, Space } from 'antd';
 import FormServiceDescriptsions from './FormServiceDescriptsions';
+import FormAddREST from './FormAddREST';
+import FormAddWSDL from './FormAddWSDL';
 
 const { Panel } = Collapse;
 const { Search } = Input;
@@ -15,7 +17,6 @@ const { Search } = Input;
 const Services: React.FC = () => {
 	const serviceDCModel = useModel('Clients.serviceDescriptrionsClient');
 	const urlPath = window.location.pathname.split('/');
-
 	const id = urlPath[urlPath.length - 2];
 
 	// console.log(id);
@@ -49,24 +50,15 @@ const Services: React.FC = () => {
 		<>
 			<div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
 				<Search placeholder='Search' style={{ width: 200 }} onChange={(e) => onSearch(e.target.value)} />
-				<div className='flex'>
-					<Button type='primary' onClick={serviceDCModel.showModalREST} icon={<PlusCircleOutlined />}>
+				<div style={{ display: 'flex', justifyContent: 'space-between', gap: '8px' }}>
+					<Button type='primary' onClick={serviceDCModel.showModalREST} icon={<PlusCircleOutlined />} shape='round'>
 						Add REST
 					</Button>
-					<Modal
-						title='Add REST'
-						open={serviceDCModel.isOpenModalREST}
-						onOk={serviceDCModel.hideModalREST}
-						onCancel={serviceDCModel.hideModalREST}
-						footer={null}
-					>
-						<p>Some contents...</p>
-						<p>Some contents...</p>
-						<p>Some contents...</p>
-					</Modal>
-					<Button type='primary' className='mr-2'>
-						<SettingOutlined />
+					<FormAddREST />
+					<Button type='primary' onClick={serviceDCModel.showModalWSDL} icon={<PlusCircleOutlined />} shape='round'>
+						Add WSDL
 					</Button>
+					<FormAddWSDL />
 				</div>
 			</div>
 			<Card bodyStyle={{ height: '100%' }}>
@@ -120,7 +112,12 @@ const Services: React.FC = () => {
 											dataIndex: 'service_code',
 											key: 'service_code',
 											render(value, record, index) {
-												return <a href='#record'>{value}</a>;
+												const href = `/clients/${id}/services-descriptrions/${id}:${value}`;
+												return (
+													<strong onClick={(e) => history.push(href)} style={{ cursor: 'pointer' }}>
+														{value}
+													</strong>
+												);
 											},
 										},
 										{
