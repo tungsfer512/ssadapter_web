@@ -3,7 +3,7 @@ import {useModel} from "@@/plugin-model/useModel";
 import React from "react";
 
 const AddClientStep2 = () => {
-  const {prevStep, nextStep, changeSelectToken, listTokenStep2, tokenSelected} = useModel('addClient.addClient');
+  const {prevStep, nextStep, changeSelectToken, listTokenStep2, tokenSelected, cancel} = useModel('addClient.addClient');
 
   return (
     <>
@@ -15,6 +15,7 @@ const AddClientStep2 = () => {
       </Card>
 
       <Space style={{width: '100%', justifyContent: 'flex-end', marginTop: '20px'}}>
+        <Button onClick={() => cancel()}>Cancel</Button>
         <Button onClick={prevStep}>Back</Button>
         <Button type="primary" onClick={nextStep}>Continue</Button>
       </Space>

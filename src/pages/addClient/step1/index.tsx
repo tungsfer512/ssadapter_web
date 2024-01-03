@@ -13,7 +13,8 @@ const AddClientStep1 = () => {
     onSelectClient,
     onCancelModelSelectClient,
     submitStep1Form,
-    listMemberClasses} = useModel('addClient.addClient');
+    listMemberClasses,
+    cancel} = useModel('addClient.addClient');
 
   // rowSelection object indicates the need for row selection
   const rowSelection = {
@@ -121,6 +122,7 @@ const AddClientStep1 = () => {
         </Row>
       </Card>
       <Space style={{width: '100%', justifyContent: 'flex-end', marginTop: '20px'}}>
+        <Button onClick={() => cancel()}>Cancel</Button>
         <Button type="primary" htmlType='submit'>Continue</Button>
       </Space>
     </Form>
