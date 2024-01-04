@@ -1,7 +1,14 @@
 import {useState} from "react";
 import {useForm} from "antd/es/form/Form";
-import {apiImportCert, deleteCsrApi, getTokenApi} from "@/services/KeyAndCertificateService/signAndAuthKeys";
+import {
+  apiImportCert,
+  deleteCsrApi,
+  deleteKeyApi,
+  getKeyDetailApi,
+  getTokenApi, renameKeyApi
+} from "@/services/KeyAndCertificateService/signAndAuthKeys";
 import {message, UploadProps} from "antd";
+import {history} from 'umi';
 
 
 export default () => {
@@ -16,6 +23,8 @@ export default () => {
   const [valueStep1, setValueStep1] = useState();
   const [valueStep2, setValueStep2] = useState();
   const [valueStep3, setValueStep3] = useState();
+  const [keyInformation, setKeyInformation] = useState<any>();
+  const [renameKeyForm] = useForm();
   const getTokenInfo = async () => {
     setLoadingTokenInfo(true);
     try {
@@ -61,6 +70,51 @@ export default () => {
     }
   };
 
+
+  const getKeyDetail = async (keyId: string) => {
+    try {
+      const res = await getKeyDetailApi(keyId);
+      const resData = res.data.data;
+      if(resData) {
+        setKeyInformation(resData);
+        renameKeyForm.setFieldValue('name', resData.name);
+      }
+    } catch (err) {
+      Promise.reject(err);
+    }
+  };
+
+  const backToPreviousPage = () => {
+    history.goBack();
+    getTokenInfo();
+  };
+
+  const deleteKey = async (keyId: string) => {
+    try {
+      const res = await deleteKeyApi(keyId);
+      if(res) {
+        message.success('Key deleted ');
+        backToPreviousPage();
+      }
+    } catch (err) {
+      Promise.reject(err);
+    }
+  };
+
+  const renameKey = async (keyId: string) => {
+    try {
+      const reqTemp = keyInformation;
+      reqTemp.name = renameKeyForm.getFieldValue('name');
+      const res = await renameKeyApi(keyId, reqTemp);
+      if(res) {
+        message.success('Key saved ');
+        backToPreviousPage();
+      }
+    } catch (err) {
+      Promise.reject(err);
+    }
+  };
+
   return {
     tokenInfo,
     getTokenInfo,
@@ -82,7 +136,13 @@ export default () => {
     isOpenGenerateCsr,
     setIsOpenGenerateCsr,
     importCertProp,
-    deleteCsr
+    deleteCsr,
+    getKeyDetail,
+    keyInformation,
+    deleteKey,
+    backToPreviousPage,
+    renameKeyForm,
+    renameKey
   };
 };
 

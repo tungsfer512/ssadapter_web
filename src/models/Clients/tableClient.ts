@@ -69,6 +69,7 @@ export default () => {
             member_code: item.member_code
           };
         });
+        console.log(dataTable);
         setData(dataTable);
       }
     ).finally(() => {setLoadingGetClient(false)});

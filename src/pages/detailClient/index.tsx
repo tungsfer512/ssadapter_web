@@ -99,12 +99,12 @@ const DetailClient = (props: any) => {
         <li>
           <NavLink to={currentPath+'/'} exact activeClassName='active'>Details</NavLink>
         </li>
-        <li>
+        {!subsystem?.owner && <li>
           <NavLink to={currentPath+'/service-clients'} activeClassName='active'>Service clients</NavLink>
-        </li>
-        <li>
+        </li>}
+        {!subsystem?.owner && <li>
           <NavLink to={currentPath+'/services'} activeClassName='active'>Services</NavLink>
-        </li>
+        </li>}
         <li>
           <NavLink to={currentPath+'/internal-servers'} activeClassName='active'>Internal servers</NavLink>
         </li>

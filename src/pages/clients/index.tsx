@@ -1,6 +1,6 @@
 import {Button, Card, Checkbox, Col, Form, Input, Modal, Row, Select, Space, Spin, Table, Tag} from 'antd';
 import './style.less';
-import {ExclamationCircleOutlined, PlusCircleOutlined, PlusOutlined} from "@ant-design/icons";
+import {ExclamationCircleOutlined, FolderFilled, PlusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 import {ColumnsType} from "antd/es/table";
 import {DataType, ISubSysInfo} from "@/models/Clients/tableClient";
 import {history} from 'umi';
@@ -43,6 +43,7 @@ const ClientsPage = () => {
       render: (val, rec) => {
         return (
           <>
+            {rec.owner && <FolderFilled className="text-primary" style={{paddingRight: '15px'}}/>}
             <a onClick={(event) => {
               history.push(`/clients/${rec.id}`);
             }}>

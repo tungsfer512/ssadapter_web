@@ -14,6 +14,7 @@ import KeyOutlined from "@ant-design/icons/KeyOutlined";
 import {useEffect} from "react";
 import AddKey from "@/components/AddKey/addKey";
 import GenerateCsr from "@/components/GenerateCsr";
+import {history} from "@@/core/history";
 
 const {Panel} = Collapse;
 const SignAndAuthKeys = () => {
@@ -51,7 +52,7 @@ const SignAndAuthKeys = () => {
             <Row className={'table-row'}>
               <Col span={4}>
                 <Space style={{paddingLeft: '30px'}} className={'text-primary'}>
-                  <ScheduleOutlined />
+                  <ScheduleOutlined/>
                   <span>{certInfo.certificate_details.subject_common_name} {certInfo.certificate_details.serial}</span>
                 </Space>
               </Col>
@@ -75,6 +76,11 @@ const SignAndAuthKeys = () => {
     );
   };
 
+  const redirectToKeyDetail = (keyInfo: any) => {
+    history.push('./key/'+keyInfo.id);
+
+  };
+
   const renderCertSigning = (certSigning: ICertificateSigning[], keyId: string) => {
     return certSigning.map(
       certInfo => {
@@ -83,7 +89,7 @@ const SignAndAuthKeys = () => {
             <Row className={'table-row'}>
               <Col span={4}>
                 <Space style={{paddingLeft: '30px'}}>
-                  <ScheduleOutlined />
+                  <ScheduleOutlined/>
                   <span>Request</span>
                 </Space>
               </Col>
@@ -91,7 +97,8 @@ const SignAndAuthKeys = () => {
                 {certInfo.id}
               </Col>
               <Col span={3}>
-                <Button type="text" ghost className="button-action" style={{float: "right"}} onClick={() => confirmDeleteCsr(certInfo.id, keyId)}>Delete CSR</Button>
+                <Button type="text" ghost className="button-action" style={{float: "right"}}
+                        onClick={() => confirmDeleteCsr(certInfo.id, keyId)}>Delete CSR</Button>
               </Col>
             </Row>
           </>
@@ -107,13 +114,16 @@ const SignAndAuthKeys = () => {
           <>
             <Row className={'table-row'}>
               <Col span={20}>
+
                 <Space className={'text-primary'} style={{paddingLeft: '15px'}}>
                   <span><KeyOutlined/></span>
-                  <span>{keyInfo.name}</span>
+                  <a onClick={() => {redirectToKeyDetail(keyInfo)}}>{keyInfo.name}</a>
                 </Space>
               </Col>
               <Col span={4}>
-                <div style={{float: 'right'}}><Button onClick={() => {model.setIsOpenGenerateCsr(true);}} type='text' className={'button-action'}>Generate CSR</Button></div>
+                <div style={{float: 'right'}}><Button onClick={() => {
+                  model.setIsOpenGenerateCsr(true);
+                }} type='text' className={'button-action'}>Generate CSR</Button></div>
               </Col>
             </Row>
             {renderCertInfo(keyInfo.certificates)}
@@ -207,7 +217,8 @@ const SignAndAuthKeys = () => {
                 <div className="control-bar">
                   <h3 className={'text-primary'}>
                     <span>Token: {item.name} </span>
-                    <Button type={"text"} shape="round" onClick={() => model.setOpenEditTokenModal(true)}><EditOutlined/></Button>
+                    <Button type={"text"} shape="round"
+                            onClick={() => model.setOpenEditTokenModal(true)}><EditOutlined/></Button>
                   </h3>
 
                   <Space style={{justifyContent: 'flex-end'}}>
@@ -247,7 +258,9 @@ const SignAndAuthKeys = () => {
                         <Col span={3}>
                         </Col>
                       </Row>
-                      {renderKeyInfo(item.keys.filter(keyInfo => {return keyInfo.usage === "AUTHENTICATION";}))}
+                      {renderKeyInfo(item.keys.filter(keyInfo => {
+                        return keyInfo.usage === "AUTHENTICATION";
+                      }))}
                     </div>
                   </Panel>
                   <Panel className="no-padding" header="SIGN Keys and Certificates" key="2" extra={genExtra()}>
@@ -271,7 +284,9 @@ const SignAndAuthKeys = () => {
                         <Col span={3}>
                         </Col>
                       </Row>
-                      {renderKeyInfo(item.keys.filter(keyInfo => {return keyInfo.usage === 'SIGNING';}))}
+                      {renderKeyInfo(item.keys.filter(keyInfo => {
+                        return keyInfo.usage === 'SIGNING';
+                      }))}
                     </div>
                   </Panel>
                 </Collapse>

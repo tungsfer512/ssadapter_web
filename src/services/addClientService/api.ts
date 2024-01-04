@@ -16,3 +16,8 @@ export async function csrSubjectField(req: {certService: any, keyUsageType: any,
 export async function registerClient(req: any) {
   return axios.post(`${ip3}/initialize/tokens/0/keys-with-csrs`, req);
 }
+
+export async function getListClientApi(req?: any) {
+  return axios.get(`${ip3}/initialize/clients?exclude_local=true&internal_search=false&show_members=false&instance=CS`);
+}
+

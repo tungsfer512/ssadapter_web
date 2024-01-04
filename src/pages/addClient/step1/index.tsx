@@ -1,5 +1,5 @@
 import {Button, Card, Col, Form, Input, Modal, Row, Select, Space, Table} from 'antd';
-import React from "react";
+import React, {useEffect} from "react";
 import rules from '@/utils/rules';
 import {ColumnsType} from "antd/es/table";
 import {useModel} from "@@/plugin-model/useModel";
@@ -14,7 +14,8 @@ const AddClientStep1 = () => {
     onCancelModelSelectClient,
     submitStep1Form,
     listMemberClasses,
-    cancel} = useModel('addClient.addClient');
+    cancel,
+    getListClient} = useModel('addClient.addClient');
 
   // rowSelection object indicates the need for row selection
   const rowSelection = {
@@ -22,6 +23,10 @@ const AddClientStep1 = () => {
       console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
     },
   };
+
+  useEffect(() => {
+    getListClient();
+  }, []);
 
   const columns: ColumnsType<IDataType> = [
     {

@@ -37,16 +37,15 @@
     component: './clients'
   },
   {
+    path: '/keys-and-certificates/key/:id',
+    component: './KeysAndCertificates/KeyDetail',
+  },
+  {
     name: 'Keys and certificates',
     path: '/keys-and-certificates',
     icon: 'KeyOutlined',
     component: './KeysAndCertificates',
-    routes: [
-      {
-        path: '/',
-        redirect: './api-key',
-      }
-    ]
+    routes: []
   },
   // {
   //     name: 'Diagnostics',

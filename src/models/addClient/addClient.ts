@@ -1,6 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {Form, message} from "antd";
-import {csrSubjectField, getMemberClasses, getTokenInfo, registerClient} from "@/services/addClientService/api";
+import {
+  csrSubjectField,
+  getListClientApi,
+  getMemberClasses,
+  getTokenInfo,
+  registerClient
+} from "@/services/addClientService/api";
 import {useForm} from "antd/es/form/Form";
 import {getCertServiceApi} from "@/services/KeyAndCertificateService/signAndAuthKeys";
 import {history} from "@@/core/history";
@@ -10,6 +16,7 @@ export default () => {
   //step1 models
   const [step1Form] = Form.useForm();
   const [showModalSelectClient, setShowModalSelectClient] = useState(false);
+  const [listClient, setListClient] = useState([]);
   const [listMemberClasses, setListMemberClasses] = useState<{label: string, value: string}[]>([]);
   const [step1Value, setStep1Value] = useState<any>();
   //step2 models
@@ -58,6 +65,18 @@ export default () => {
   const submitStep1Form = (value: IAddClientStep1Form) => {
     setStep1Value(value);
     nextStep();
+  };
+
+  const getListClient = async () => {
+    try {
+      const res = await getListClientApi();
+      const resData = res.data.data;
+      if(resData) {
+        console.log(resData);
+      }
+    } catch (err) {
+      Promise.reject(err);
+    }
   };
 
   useEffect(() => {
@@ -196,6 +215,7 @@ export default () => {
     nextStep,
     prevStep,
     step1Form,
+    getListClient,
     showModalSelectClient,
     onShowModalSelectClient,
     onSelectClient,
