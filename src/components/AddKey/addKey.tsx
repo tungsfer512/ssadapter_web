@@ -1,7 +1,7 @@
 import {Button, Col, Form, Input, Modal, Row, Select, Space, Steps} from "antd";
-import React, {useEffect, useState} from "react";
-import {getCertServiceApi} from "@/services/KeyAndCertificateService/signAndAuthKeys";
-import rules from "@/utils/rules";
+import {useEffect, useState} from 'react';
+import {getCertServiceApi} from '@/services/KeyAndCertificateService/signAndAuthKeys';
+import rules from '@/utils/rules';
 
 const AddKey = (prop: any) => {
   const model = prop.model;
@@ -15,6 +15,7 @@ const AddKey = (prop: any) => {
     {label: 'DER', value: 'DER'}
   ]);
   const [certService, setCertService] = useState();
+  const [isUsageSigning, setIsUsageSigning] = useState<boolean>();
 
   const initStep2 = async (values: any) => {
     model.setValueStep1(values);
@@ -23,6 +24,7 @@ const AddKey = (prop: any) => {
 
   const initStep3 = async (values: any) => {
     model.setValueStep2(values);
+    console.log(values);
     setCurrent(current+1);
   };
 
@@ -46,9 +48,14 @@ const AddKey = (prop: any) => {
     );
   }, []);
 
+  const changeUsageValue = (value: any) => {
+    setIsUsageSigning(value == 'SIGNING');
+  };
+
   const step1 = () => {
     return (
       <>
+        field value is: {model.step1AddForm.getFieldValue('keyLabel')}
         <Form layout='vertical' form={model.step1AddForm} onFinish={async (values) => initStep2(values)}>
           <Row gutter={[5, 5]}>
             <Col span={12}>
@@ -73,7 +80,8 @@ const AddKey = (prop: any) => {
   const step2 = () => {
     return (
       <>
-        <Form layout='vertical' form={model.step2AddForm} onFinish={async (values) => initStep3(values)}>
+        <Form layout='vertical' form={model.step2AddForm}
+              onFinish={async (values) => initStep3(values)}>
           <Row gutter={[5, 5]}>
             <Col span={12}>
               <h3>Usage</h3>
@@ -81,16 +89,31 @@ const AddKey = (prop: any) => {
             </Col>
             <Col span={12}>
               <Form.Item name="usage" rules={[...rules.required]}>
-                <Select options={usageOptions}></Select>
+                <Select options={usageOptions} onChange={(value) => {changeUsageValue(value);}}/>
               </Form.Item>
             </Col>
+            {
+              isUsageSigning && (
+                <>
+                  <Col span={12}>
+                    <h3>Client</h3>
+                    <p>X-Road member the certificate will be issued for.</p>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item name="client" rules={[...rules.required]}>
+                      <Select options={certService}/>
+                    </Form.Item>
+                  </Col>
+                </>
+              )
+            }
             <Col span={12}>
               <h3>Certification Service</h3>
               <p>Certification Authority (CA) that will issue the certificate.</p>
             </Col>
             <Col span={12}>
               <Form.Item name="certService" rules={[...rules.required]}>
-                <Select options={certService}></Select>
+                <Select options={certService}/>
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -99,7 +122,7 @@ const AddKey = (prop: any) => {
             </Col>
             <Col span={12}>
               <Form.Item name="CSRFormat" rules={[...rules.required]}>
-                <Select options={CSRFormatOptions}></Select>
+                <Select options={CSRFormatOptions}/>
               </Form.Item>
             </Col>
           </Row>
