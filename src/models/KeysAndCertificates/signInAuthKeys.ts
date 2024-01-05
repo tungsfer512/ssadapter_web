@@ -40,7 +40,7 @@ export default () => {
     }
   };
 
-  const finishAddForm = async (req: ICsrGenerateRequest)=> {
+  const finishAddForm = async (req: ICsrGenerateRequest) => {
     console.log(req);
   };
 
@@ -58,10 +58,10 @@ export default () => {
     },
   };
 
-  const deleteCsr = async (req: {keyId: string, csrId: string}) => {
+  const deleteCsr = async (req: { keyId: string, csrId: string }) => {
     try {
       const res = await deleteCsrApi(req);
-      if(res) {
+      if (res) {
         message.success('CSR deleted ');
         getTokenInfo();
       }
@@ -75,7 +75,7 @@ export default () => {
     try {
       const res = await getKeyDetailApi(keyId);
       const resData = res.data.data;
-      if(resData) {
+      if (resData) {
         setKeyInformation(resData);
         renameKeyForm.setFieldValue('name', resData.name);
       }
@@ -92,7 +92,7 @@ export default () => {
   const deleteKey = async (keyId: string) => {
     try {
       const res = await deleteKeyApi(keyId);
-      if(res) {
+      if (res) {
         message.success('Key deleted ');
         backToPreviousPage();
       }
@@ -106,7 +106,7 @@ export default () => {
       const reqTemp = keyInformation;
       reqTemp.name = renameKeyForm.getFieldValue('name');
       const res = await renameKeyApi(keyId, reqTemp);
-      if(res) {
+      if (res) {
         message.success('Key saved ');
         backToPreviousPage();
       }
