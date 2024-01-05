@@ -437,6 +437,12 @@ canvas {
   color: var(--primary-color);
 }
 
+.button-danger {
+  font-weight: 700;
+  color: var(--ant-error-color);
+}
+
+
 .hide-footer .ant-modal-footer{
   display: none;
 }
@@ -491,4 +497,16 @@ ul.menu-bar li {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.no-padding {
+  .ant-collapse-content-box {
+    padding: 0 !important;
+  }
+}
+
+.ant-row.table-row{
+  min-height: 50px !important;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }

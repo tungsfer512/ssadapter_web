@@ -1,6 +1,6 @@
-import {Button, Card, Checkbox, Col, Form, Input, Modal, Row, Select, Space, Table, Tag} from 'antd';
+import {Button, Card, Checkbox, Col, Form, Input, Modal, Row, Select, Space, Spin, Table, Tag} from 'antd';
 import './style.less';
-import {PlusCircleOutlined, PlusOutlined} from "@ant-design/icons";
+import {ExclamationCircleOutlined, FolderFilled, PlusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 import {ColumnsType} from "antd/es/table";
 import {DataType, ISubSysInfo} from "@/models/Clients/tableClient";
 import {history} from 'umi';
@@ -18,8 +18,23 @@ const ClientsPage = () => {
     formItemLayout,
     formLayout,
     formSubmiting,
-    handleAddSubsystem
+    handleAddSubsystem,
+    registerClient,
+    loadingGetClient
   } = useModel('Clients.tableClient');
+
+  const confirmRegister= (keyId: string) => {
+    Modal.confirm({
+      title: 'Register client',
+      icon: <ExclamationCircleOutlined/>,
+      content: `Are you sure you want to send a client registration request? `,
+      okText: 'Yes',
+      cancelText: 'Cancel',
+      onOk: () => {
+        registerClient(keyId);
+      }
+    });
+  };
 
   const columns: ColumnsType<DataType> = [
     {
@@ -28,6 +43,7 @@ const ClientsPage = () => {
       render: (val, rec) => {
         return (
           <>
+            {rec.owner && <FolderFilled className="text-primary" style={{paddingRight: '15px'}}/>}
             <a onClick={(event) => {
               history.push(`/clients/${rec.id}`);
             }}>
@@ -63,7 +79,7 @@ const ClientsPage = () => {
       render: (val, rec) => {
         return (
           rec.owner && <Button className={'button-action'} onClick={() => showAddSubSysModal(rec)} ghost type="text" icon={<PlusCircleOutlined/>}>Add subsystem</Button>
-          || rec.status == 'SAVED' && <Button className={'button-action'} onClick={() => showAddSubSysModal(rec)} ghost type="text">Register</Button>
+          || rec.status == 'SAVED' && <Button className={'button-action'} onClick={() => confirmRegister(rec.id)} ghost type="text">Register</Button>
         );
       }
     },
@@ -90,9 +106,11 @@ const ClientsPage = () => {
         </div>
       </div>
 
-      <Card bodyStyle={{padding: "0px"}}>
-        <Table columns={columns} dataSource={data} pagination={false}/>
-      </Card>
+      <Spin spinning={loadingGetClient}>
+        <Card bodyStyle={{padding: "0px"}}>
+          <Table columns={columns} dataSource={data} pagination={false}/>
+        </Card>
+      </Spin>
 
       <Modal title="Add subsystem"
              okText="Add subsystem"

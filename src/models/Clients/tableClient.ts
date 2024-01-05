@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {addSubSystem, getClientTable, IAddSubSystemReq} from '@/services/cliensService/api';
+import {addSubSystem, getClientTable, IAddSubSystemReq, registerClientApi} from '@/services/cliensService/api';
 import {Form, message} from "antd";
 
 type LayoutType = Parameters<typeof Form>[0]['layout'];
@@ -30,6 +30,7 @@ export default () => {
   const [form] = Form.useForm();
   const [formLayout, setFormLayout] = useState<LayoutType>('horizontal');
   const [formSubmiting, setFormSubmiting] = useState<boolean>(false);
+  const [loadingGetClient, setLoadingGetClient] = useState<boolean>(false);
   const onFormLayoutChange = ({ layout }: { layout: LayoutType }) => {
     setFormLayout(layout);
   };
@@ -52,6 +53,7 @@ export default () => {
   };
 
   const getClient = () => {
+    setLoadingGetClient(true);
     getClientTable().then(
       res => {
         const dataTable = res.data.data.map((item: any) => {
@@ -67,9 +69,10 @@ export default () => {
             member_code: item.member_code
           };
         });
+        console.log(dataTable);
         setData(dataTable);
       }
-    );
+    ).finally(() => {setLoadingGetClient(false)});
   };
 
   const handleAddSubsystem = (subSysInputData: ISubSysInfo) => {
@@ -91,6 +94,18 @@ export default () => {
     );
   };
 
+  const registerClient = async (clientId: string) => {
+    try {
+      const res = await registerClientApi({clientId: clientId});
+      if(res) {
+        message.success('Client registration request sent successfully ');
+        getClient();
+      }
+    } catch (err) {
+      Promise.reject(err);
+    }
+  };
+
   useEffect(() => {
     getClient();
   }, []);
@@ -106,7 +121,9 @@ export default () => {
     formLayout,
     formSubmiting,
     handleAddSubsystem,
-    getClient
+    getClient,
+    registerClient,
+    loadingGetClient
   };
 };
 

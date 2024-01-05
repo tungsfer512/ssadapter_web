@@ -5,6 +5,7 @@ import {useModel} from 'umi';
 import {ColumnsType} from "antd/es/table";
 import {CADataType, DataType, FixedDataType} from "@/models/Settings/tableSettings";
 import {CheckboxOptionType} from "antd/lib/checkbox/Group";
+import {models} from "@@/plugin-model/Provider";
 
 const SettingPage = () => {
   const settingModel = useModel('Settings.tableSettings');
@@ -74,6 +75,10 @@ const SettingPage = () => {
     settingModel.getTimestapingServices();
   }, []);
 
+  useEffect(() => {
+    settingModel.xoaPhanTuTrungLap();
+  }, [settingModel.datasettingtime, settingModel.listTimestapingServie]);
+
   return (
     <>
       <div className='control-bar'>
@@ -134,7 +139,7 @@ const SettingPage = () => {
              okButtonProps={{disabled: !Boolean(settingModel.radioValue)}}>
         <h3>Trusted Timestamping services: </h3>
         <Radio.Group
-          options={settingModel.listTimestapingServie}
+          options={settingModel.listTimestapingServieFilter}
           onChange={settingModel.onChangeRadioValue}
           value={settingModel.radioValue}></Radio.Group>
       </Modal>

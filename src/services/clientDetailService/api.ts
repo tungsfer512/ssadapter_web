@@ -20,3 +20,12 @@ export async function unregisterClientsById(id: string) {
 export async function getAllServiceClient(id: string) {
   return axios.get(`${ip3}/initialize/clients/${id}/service-clients`);
 }
+
+export async function getMemberTableApi(clientId:  string) {
+  return axios.get(`${ip3}/initialize/clients/${clientId}/service-client-candidates`);
+}
+
+export async function getServiceDescription(clientId:  string) {
+  return axios.get(`${ip3}/initialize/clients/${clientId}/service-descriptions`);
+}
+

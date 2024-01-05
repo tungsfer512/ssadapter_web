@@ -30,6 +30,7 @@ export default () => {
   const [openAddTimestampingServices, setOpenAddTimestampingServices] = useState<boolean>(false);
   const [radioValue, setRadioValue] = useState();
   const [listTimestapingServie, setListTimestapingServie] = useState<CheckboxOptionType[]>([]);
+  const [listTimestapingServieFilter, setListTimestapingServieFilter] = useState<CheckboxOptionType[]>([]);
 
   const getSetting = () => {
     getSettingTable().then((res) => {
@@ -48,7 +49,6 @@ export default () => {
             url: item.url,
           };
         });
-        console.log(dataTabletime);
         setDatasettingtime(dataTabletime);
       }
     });
@@ -170,7 +170,6 @@ export default () => {
       setBackuping(false);
       const resData = res.data.data;
       if (resData) {
-        console.log(resData);
         message.success(`Backup ${resData.filename} successfully created`);
         getSettingBackup();
       }
@@ -183,7 +182,6 @@ export default () => {
     try {
       const res = await getTimestapingServiceApi();
       const resData = res.data.data;
-      console.log(resData);
       if (resData) {
         setListTimestapingServie(resData.map((dataMap: any, index: number) => {
           return {
@@ -248,6 +246,17 @@ export default () => {
       }
     }
   };
+
+  const xoaPhanTuTrungLap = async () => {
+    let temp = listTimestapingServie;
+    if(listTimestapingServie.length>0 && datasettingtime.length>0) {
+      datasettingtime.forEach((item: any) => {
+        temp = temp.filter((timestaping: any) => {return timestaping.label != item.name;});
+      });
+    }
+    setListTimestapingServieFilter(temp);
+  };
+
   return {
     data,
     datasetting,
@@ -279,7 +288,9 @@ export default () => {
     radioValue,
     getTimestapingServices,
     listTimestapingServie,
-    addTempstampingService
+    addTempstampingService,
+    xoaPhanTuTrungLap,
+    listTimestapingServieFilter
   };
 };
 

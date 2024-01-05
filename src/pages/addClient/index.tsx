@@ -12,27 +12,27 @@ const AddClient = () => {
   const {currentStep, nextStep, prevStep} = useModel('addClient.addClient');
   const steps = [
     {
-      title: 'Member details',
+      title: '',
       content: <Step1/>,
     },
     {
-      title: 'Token',
+      title: '',
       content: <Step2/>,
     },
     {
-      title: 'Sign Key',
+      title: '',
       content: <Step3/>,
     },
     {
-      title: 'CSR details',
+      title: '',
       content: <Step4/>,
     },
     {
-      title: 'Generate CSR',
+      title: '',
       content: <Step5/>,
     },
     {
-      title: 'Finish',
+      title: '',
       content: <Step6/>,
     },
   ];

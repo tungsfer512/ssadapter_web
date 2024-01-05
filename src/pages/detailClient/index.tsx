@@ -1,7 +1,6 @@
 import './style.less';
 import Detail from "@/pages/detailClient/detail";
 import {Button, message, Modal} from "antd";
-import LocalGroups from "@/pages/detailClient/localGroups";
 import {useEffect, useState} from "react";
 import {Route, Switch} from "react-router";
 import InternalServers from "@/pages/detailClient/internalServers";
@@ -98,19 +97,16 @@ const DetailClient = (props: any) => {
       {/*<Tabs defaultActiveKey="1" items={items} />*/}
       <ul className='menu-bar'>
         <li>
-          <NavLink to={currentPath+'/'} activeClassName='active'>Details</NavLink>
+          <NavLink to={currentPath+'/'} exact activeClassName='active'>Details</NavLink>
         </li>
-        <li>
+        {!subsystem?.owner && <li>
           <NavLink to={currentPath+'/service-clients'} activeClassName='active'>Service clients</NavLink>
-        </li>
-        <li>
+        </li>}
+        {!subsystem?.owner && <li>
           <NavLink to={currentPath+'/services'} activeClassName='active'>Services</NavLink>
-        </li>
+        </li>}
         <li>
           <NavLink to={currentPath+'/internal-servers'} activeClassName='active'>Internal servers</NavLink>
-        </li>
-        <li>
-          <NavLink to={currentPath+'/local-groups'} activeClassName='active'>Local groups</NavLink>
         </li>
       </ul>
 
@@ -134,9 +130,6 @@ const DetailClient = (props: any) => {
         </Route>
         <Route exact path="/clients/:id/internal-servers">
           <InternalServers/>
-        </Route>
-        <Route exact path="/clients/:id/local-groups">
-          <LocalGroups/>
         </Route>
         <Route exact path="/clients/:id/service-clients">
           <ServiceClients path={id}/>

@@ -33,3 +33,7 @@ export async function deleteAccessRight(req: {clientId: string, serviceId: strin
 export async function getAllServiceApi(req: {clientId: string}) {
   return axios.get(`${ip3}/initialize/clients/CS%3AGOV%3AMANAGESS2MC%3AABCABC/service-descriptions`);
 }
+
+export async function registerClientApi(req: {clientId: string}) {
+  return axios.get(`${ip3}/initialize/clients/${req.clientId}/register`);
+}

@@ -1,9 +1,9 @@
 import {Button, Card, Modal, Space, Table, Upload} from 'antd';
 import {DatabaseOutlined, ExclamationCircleOutlined, UploadOutlined} from '@ant-design/icons';
 import {useEffect} from 'react';
-import {useModel} from 'umi';
 import {BackupDataType} from '@/models/Settings/tableSettings';
 import {ColumnsType} from 'antd/lib/table';
+import {useModel} from "@@/plugin-model/useModel";
 
 const Backup = () => {
   const settingModel = useModel('Settings.tableSettings');
@@ -60,7 +60,7 @@ const Backup = () => {
           <Space>
             <Button shape="round" loading={settingModel.isBackuping} icon={<DatabaseOutlined/>}
                     onClick={() => settingModel.backupConfig()}>
-              Back up config
+              Back up thủ công
             </Button>
             <Upload {...settingModel.props} showUploadList={false}>
               <Button type="primary" shape="round" icon={<UploadOutlined/>}>
